@@ -1,0 +1,39 @@
+name: Auto Data Collect
+
+on:
+  schedule:
+    # 서머타임 기준 시간으로 고정 (UTC)
+    - cron: '0 17 * * 1-5'   # 조기 종료 시간 (현지 13:00)
+    - cron: '0 20 * * 1-5'   # 정규 종료 시간 (현지 16:00)
+    - cron: '30 20 * * 1-5'  # 정규 종료 +30m
+    - cron: '0 21 * * 1-5'   # 정규 종료 +1h
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        # pytz 라이브러리 추가
+        run: |
+          pip install pandas yfinance pandas_market_calendars pytz
+
+      - name: Run script
+        # 실행 파일명 collect.py로 변경
+        run: python collect.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add master_regular_close.csv
+          git commit -m "Auto update: stock data" || echo "No changes to commit"
+          git push
