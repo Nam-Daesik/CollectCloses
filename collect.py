@@ -53,7 +53,10 @@ full_idx = past_idx.union(future_idx)
 
 data = data.reindex(full_idx)
 data.index = data.index.strftime('%Y-%m-%d')
-data.index.name = 'Date'
+usdkrw_data = yf.download('KRW=X', period='1d', progress=False)
+current_rate = round(float(usdkrw_data['Close'].iloc[-1]), 2)
+
+data.index.name = str(current_rate)
 
 output_filename = os.path.join(base_dir, 'master_regular_close.csv')
 data.to_csv(output_filename)
