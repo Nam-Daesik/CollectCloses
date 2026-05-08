@@ -2,11 +2,10 @@ name: Auto Data Collect
 
 on:
   schedule:
-    # 서머타임 기준 시간으로 고정 (UTC)
-    - cron: '0 17 * * 1-5'   # 조기 종료 시간 (현지 13:00)
-    - cron: '0 20 * * 1-5'   # 정규 종료 시간 (현지 16:00)
-    - cron: '30 20 * * 1-5'  # 정규 종료 +30m
-    - cron: '0 21 * * 1-5'   # 정규 종료 +1h
+    - cron: '13 17 * * 1-5' 
+    - cron: '17 20 * * 1-5' 
+    - cron: '43 20 * * 1-5' 
+    - cron: '11 21 * * 1-5'
   workflow_dispatch:
 
 jobs:
