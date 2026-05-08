@@ -38,8 +38,8 @@ data.index = pd.to_datetime(data.index).normalize()
 data.dropna(how='all', inplace=True)
 data = data[tickers]
 
-if data.isnull().any().any():
-    raise ValueError("결측치가 포함된 데이터가 있습니다. 파일 저장을 취소합니다.")
+if data.iloc[-1].isnull().any():
+    raise ValueError("오늘 수집된 데이터에 결측치가 있습니다. 파일 저장을 취소합니다.")
 
 nyse = mcal.get_calendar('NYSE')
 
